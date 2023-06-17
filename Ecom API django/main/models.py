@@ -7,7 +7,7 @@ class Vendor(models.Model):
     address = models.TextField(null=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.username   
 
 # Product category
 class ProductCategory(models.Model):
@@ -19,6 +19,8 @@ class ProductCategory(models.Model):
 
 #Product
 class Product(models.Model):
+    category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, related_name='category_product')
+    vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=200)
     detail = models.TextField(null=True)
     price = models.FloatField()
@@ -26,8 +28,26 @@ class Product(models.Model):
     def __str__(self):
         return self.title
     
+#Customer Model
+class Customer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mobile = models.PositiveBigIntegerField()
 
-
-
-
+    def __str__(self):
+        return self.user.username   
     
+#Order Model
+class Order(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True )
+    order_time = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.customer.user.username   
+    
+
+#OrderItem Model
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.product.title   
