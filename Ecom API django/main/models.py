@@ -28,6 +28,9 @@ class Product(models.Model):
     def __str__(self):
         return self.title
     
+
+
+    
 #Customer Model
 class Customer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -35,6 +38,17 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.user.username   
+
+#Customer Address Model
+class CustomerAddress(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer_addresses')
+    address = models.TextField()
+    default_address = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.address   
+
+
     
 #Order Model
 class Order(models.Model):
@@ -51,3 +65,15 @@ class OrderItem(models.Model):
     
     def __str__(self):
         return self.product.title   
+    
+
+# Product Rating and Review
+class ProductRating(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='rating_customers') 
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_ratings')
+    rating = models.IntegerField()
+    reviews = models.TextField()
+    add_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.rating} - {self.reviews}'

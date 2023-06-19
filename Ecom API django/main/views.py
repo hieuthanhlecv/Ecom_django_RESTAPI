@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions, pagination
+from rest_framework import generics, permissions, pagination, viewsets
 from . import serializers
 from . import models
 
@@ -12,6 +12,8 @@ class VendorDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.VendorDetailSerializer
 
 
+
+
 #Product
 class ProductList(generics.ListCreateAPIView):
     queryset = models.Product.objects.all()
@@ -22,6 +24,15 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductDetailSerializer
 
+class ProductCustomerViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ProductRatingSerializer
+    queryset = models.ProductRating.objects.all()
+
+
+
+
+
+
 
 #Customer
 class CustomerList(generics.ListCreateAPIView):
@@ -31,6 +42,13 @@ class CustomerList(generics.ListCreateAPIView):
 class CustomerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Customer.objects.all()
     serializer_class = serializers.CustomerDetailSerializer
+
+class CustomerAddressViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.CustomerAddressSerializer
+    queryset = models.CustomerAddress.objects.all()
+
+
+
 
 
 
@@ -48,3 +66,18 @@ class OrderDetail(generics.ListAPIView):
         order = models.Order.objects.get(id=order_id)
         order_items = models.OrderItem.objects.filter(order=order)
         return order_items
+
+
+
+
+#Category
+class CategoryList(generics.ListCreateAPIView):
+    queryset = models.ProductCategory.objects.all()
+    serializer_class = serializers.CategorySerializer
+
+class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.ProductCategory.objects.all()
+    serializer_class = serializers.CategoryDetailSerializer
+
+
+
