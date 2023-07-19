@@ -9,7 +9,7 @@ class Vendor(models.Model):
     def __str__(self):
         return self.user.username   
 
-# Product category
+# Product category Models
 class ProductCategory(models.Model):
     title = models.CharField(max_length=200)
     detail = models.TextField(null=True)
@@ -17,7 +17,7 @@ class ProductCategory(models.Model):
     def __str__(self):
         return self.title
 
-#Product
+#Product Models
 class Product(models.Model):
     category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, related_name='category_product')
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True)
